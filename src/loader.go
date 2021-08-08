@@ -42,6 +42,7 @@ func Load(fileName string) model.Dataset {
             text = scanner.Text()
             size, _ := strconv.Atoi(text)
             var item model.Item
+            item.Id = j
             item.Size = size
             instance.Items = append(instance.Items, item)
         }

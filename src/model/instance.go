@@ -12,6 +12,6 @@ type Instance struct {
     Items []Item
 }
 
-func (this Instance) ToString() string {
-    return fmt.Sprintf("%s %d %d %d", this.Id, this.Capacity, this.NumItems, this.BestSolution)
+func (this Instance) Print() {
+    fmt.Printf("instance %s %d %d %d\n", this.Id, this.Capacity, this.NumItems, this.BestSolution)
 }

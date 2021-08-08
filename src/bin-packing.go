@@ -8,16 +8,36 @@ import (
 
 func main() {
 
-    dataset := Load(os.Args[1])
-    for _, instance := range(dataset.Instances) {
-
-        fmt.Println(instance.ToString())
-        bins := ff(instance)
-
-        waste := 0
-        for _, bin := range(bins) {
-            waste += (instance.Capacity - bin.Total)
+    debug := 0
+    var files []string
+    for _, arg := range(os.Args) {
+        if arg == "-d" {
+            debug++
+            continue
         }
-        fmt.Printf("  ff %d +%d (%d)\n", len(bins), len(bins) - instance.BestSolution, waste)
+        files = append(files, arg)
+    }
+
+    for _, file := range(files) {
+        dataset := Load(file)
+        for _, instance := range(dataset.Instances) {
+
+            instance.Print()
+            bins := ff(instance)
+
+            waste := 0
+            for _, bin := range(bins) {
+                waste += (instance.Capacity - bin.Total)
+            }
+            fmt.Printf("  ff %d +%d (%d)\n", len(bins), len(bins) - instance.BestSolution, waste)
+            if debug > 0 {
+                for _, bin := range(bins) {
+                    bin.Print(debug)
+                }
+                for _, item := range(instance.Items) {
+                    item.Print(debug)
+                }
+            }
+        }
     }
 }

@@ -9,23 +9,25 @@ func ff(instance model.Instance) []model.Bin {
     var bins []model.Bin
     numBins := 0
 
-    for _, item := range(instance.Items) {
+    for i, item := range(instance.Items) {
 
-        var bin *model.Bin
+        instance.Items[i].Bin = nil
         for b:=0; b<numBins; b++ {
             if bins[b].Total + item.Size < instance.Capacity {
-                bin = &bins[b]
+                instance.Items[i].Bin = &bins[b]
                 break
             }
         }
 
-        if bin == nil {
+        if instance.Items[i].Bin == nil {
             var newBin model.Bin
+            newBin.Id = numBins
             bins = append(bins, newBin)
-            bin = &bins[numBins]
+            instance.Items[i].Bin = &bins[numBins]
             numBins++
         }
-        bin.Total += item.Size
+        instance.Items[i].Bin.Total += item.Size
+        instance.Items[i].Bin.Items = append(instance.Items[i].Bin.Items, &instance.Items[i])
     }
     return bins
 }
