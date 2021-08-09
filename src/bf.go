@@ -4,7 +4,7 @@ import (
     "model"
 )
 
-func ff(instance model.Instance, channel chan []model.Bin) {
+func bf(instance model.Instance, channel chan []model.Bin) {
 
     var bins []model.Bin
     numBins := 0
@@ -12,10 +12,14 @@ func ff(instance model.Instance, channel chan []model.Bin) {
     for _, item := range(instance.Items) {
 
         var bin *model.Bin
+        minWaste := instance.Capacity
         for b:=0; b<numBins; b++ {
             if bins[b].Total + item.Size < instance.Capacity {
-                bin = &bins[b]
-                break
+                waste := instance.Capacity - bins[b].Total
+                if waste < minWaste { 
+                    bin = &bins[b]
+                    minWaste = waste
+                }
             }
         }
 
